@@ -1,41 +1,50 @@
-// src/navigation/AppNavigator.tsx
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from '../screens/HomeScreen';
-import TabNavigator from './TabNavigator';
-import RestaurantScreen from '../screens/RestaurantScreen';
 import CartScreen from '../screens/CartScreen';
 import ProfileScreen from '../screens/ProfileScreen';
-import { RootStackParamList } from './types';
+import { Feather } from '@expo/vector-icons';
 
-const Stack = createNativeStackNavigator<RootStackParamList>();
+const Tab = createBottomTabNavigator();
 
 export default function AppNavigator() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen 
+      <Tab.Navigator
+        screenOptions={{
+          tabBarActiveTintColor: '#ff4757',
+          tabBarInactiveTintColor: 'gray'
+        }}
+      >
+        <Tab.Screen 
           name="Home" 
           component={HomeScreen}
-          options={{ headerShown: false }}
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <Feather name="home" size={size} color={color} />
+            )
+          }}
         />
-        <Stack.Screen 
-          name="Restaurant" 
-          component={RestaurantScreen}
-          options={({ route }) => ({ title: route.params.name })}
-        />
-        <Stack.Screen 
+        <Tab.Screen 
           name="Cart" 
           component={CartScreen}
-          options={{ title: 'Carrello' }}
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <Feather name="shopping-cart" size={size} color={color} />
+            )
+          }}
         />
-        <Stack.Screen 
+        <Tab.Screen 
           name="Profile" 
           component={ProfileScreen}
-          options={{ title: 'Profilo' }}
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <Feather name="user" size={size} color={color} />
+            )
+          }}
         />
-      </Stack.Navigator>
+      </Tab.Navigator>
     </NavigationContainer>
   );
 }
