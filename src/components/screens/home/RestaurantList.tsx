@@ -1,81 +1,64 @@
 // src/components/screens/home/RestaurantList.tsx
 import React from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity, FlatList } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Image, FlatList } from 'react-native';
+import { Feather } from '@expo/vector-icons';
 
-type Restaurant = {
-  id: string;
-  name: string;
-  image: string;
-  rating: number;
-  deliveryTime: string;
-  minOrder: string;
-  cuisine: string;
-};
+const restaurants = [
+  {
+    id: '1',
+    name: 'Pizza Express',
+    image: require('../../../../assets/logo-lr-food-delivery.png'),
+    rating: 4.5,
+    deliveryTime: '20-30 min',
+    minOrder: '15€',
+    category: 'Italiana'
+  },
+  {
+    id: '2',
+    name: 'Sushi Master',
+    image: require('../../../../assets/logo-lr-food-delivery.png'),
+    rating: 4.8,
+    deliveryTime: '25-35 min',
+    minOrder: '20€',
+    category: 'Giapponese'
+  },
+  // Aggiungi altri ristoranti come esempio
+];
 
 type Props = {
   onSelectRestaurant: (id: string, name: string) => void;
 };
 
-const restaurants: Restaurant[] = [
-  {
-    id: '1',
-    name: 'Pizzeria da Luigi',
-    image: '🍕',
-    rating: 4.5,
-    deliveryTime: '20-30 min',
-    minOrder: '15€',
-    cuisine: 'Italiana'
-  },
-  {
-    id: '2',
-    name: 'Sushi House',
-    image: '🍱',
-    rating: 4.7,
-    deliveryTime: '25-35 min',
-    minOrder: '20€',
-    cuisine: 'Giapponese'
-  },
-  {
-    id: '3',
-    name: 'Burger King',
-    image: '🍔',
-    rating: 4.2,
-    deliveryTime: '15-25 min',
-    minOrder: '10€',
-    cuisine: 'Fast Food'
-  },
-];
-
 export default function RestaurantList({ onSelectRestaurant }: Props) {
-  const renderRestaurant = ({ item }: { item: Restaurant }) => (
-    <TouchableOpacity 
-      style={styles.restaurantCard}
-      onPress={() => onSelectRestaurant(item.id, item.name)}
-    >
-      <View style={styles.restaurantInfo}>
-        <Text style={styles.restaurantEmoji}>{item.image}</Text>
-        <View style={styles.textContainer}>
-          <Text style={styles.restaurantName}>{item.name}</Text>
-          <Text style={styles.cuisine}>{item.cuisine}</Text>
-          <View style={styles.details}>
-            <Text style={styles.rating}>⭐ {item.rating}</Text>
-            <Text style={styles.deliveryTime}>🕒 {item.deliveryTime}</Text>
-            <Text style={styles.minOrder}>Min. {item.minOrder}</Text>
-          </View>
-        </View>
-      </View>
-    </TouchableOpacity>
-  );
-
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Ristoranti</Text>
       <FlatList
         data={restaurants}
-        renderItem={renderRestaurant}
-        keyExtractor={item => item.id}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.listContent}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <TouchableOpacity 
+            style={styles.restaurantCard}
+            onPress={() => onSelectRestaurant(item.id, item.name)}
+          >
+            <Image source={item.image} style={styles.restaurantImage} />
+            <View style={styles.infoContainer}>
+              <Text style={styles.restaurantName}>{item.name}</Text>
+              <Text style={styles.category}>{item.category}</Text>
+              <View style={styles.details}>
+                <View style={styles.detailItem}>
+                  <Feather name="star" size={16} color="#ffd700" />
+                  <Text style={styles.detailText}>{item.rating}</Text>
+                </View>
+                <View style={styles.detailItem}>
+                  <Feather name="clock" size={16} color="#666" />
+                  <Text style={styles.detailText}>{item.deliveryTime}</Text>
+                </View>
+                <Text style={styles.minOrder}>Min. {item.minOrder}</Text>
+              </View>
+            </View>
+          </TouchableOpacity>
+        )}
       />
     </View>
   );
@@ -84,59 +67,60 @@ export default function RestaurantList({ onSelectRestaurant }: Props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+    paddingHorizontal: 16,
   },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 16,
   },
-  listContent: {
-    paddingBottom: 16,
-  },
   restaurantCard: {
+    flexDirection: 'row',
     backgroundColor: 'white',
     borderRadius: 12,
-    padding: 16,
     marginBottom: 16,
-    elevation: 2,
+    padding: 12,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
     shadowOpacity: 0.1,
     shadowRadius: 4,
+    elevation: 3,
   },
-  restaurantInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  restaurantImage: {
+    width: 80,
+    height: 80,
+    borderRadius: 8,
   },
-  restaurantEmoji: {
-    fontSize: 40,
-    marginRight: 16,
-  },
-  textContainer: {
+  infoContainer: {
     flex: 1,
+    marginLeft: 12,
   },
   restaurantName: {
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 4,
   },
-  cuisine: {
-    fontSize: 14,
+  category: {
     color: '#666',
     marginBottom: 8,
   },
   details: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    alignItems: 'center',
   },
-  rating: {
-    fontSize: 14,
+  detailItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginRight: 16,
   },
-  deliveryTime: {
-    fontSize: 14,
+  detailText: {
+    marginLeft: 4,
+    color: '#666',
   },
   minOrder: {
-    fontSize: 14,
+    color: '#666',
   },
 });

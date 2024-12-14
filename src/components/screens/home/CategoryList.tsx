@@ -1,19 +1,14 @@
 // src/components/screens/home/CategoryList.tsx
 import React from 'react';
-import { StyleSheet, View, ScrollView, Text, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, View, ScrollView, Text, TouchableOpacity } from 'react-native';
+import { Feather } from '@expo/vector-icons';
 
-type Category = {
-  id: string;
-  name: string;
-  image: string;
-};
-
-const categories: Category[] = [
-  { id: '1', name: 'Pizza', image: '🍕' },
-  { id: '2', name: 'Hamburger', image: '🍔' },
-  { id: '3', name: 'Sushi', image: '🍱' },
-  { id: '4', name: 'Insalate', image: '🥗' },
-  { id: '5', name: 'Dolci', image: '🍰' },
+const categories = [
+  { id: '1', name: 'Pizza', icon: 'pie-chart' },
+  { id: '2', name: 'Hamburger', icon: 'circle' },
+  { id: '3', name: 'Sushi', icon: 'square' },
+  { id: '4', name: 'Insalate', icon: 'leaf' },
+  { id: '5', name: 'Dessert', icon: 'heart' },
 ];
 
 export default function CategoryList() {
@@ -22,16 +17,17 @@ export default function CategoryList() {
       <Text style={styles.title}>Categorie</Text>
       <ScrollView 
         horizontal 
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContent}
+        showsHorizontalScrollIndicator={false} 
+        style={styles.scrollView}
       >
         {categories.map((category) => (
           <TouchableOpacity 
             key={category.id} 
             style={styles.categoryItem}
-            onPress={() => console.log(`Selected category: ${category.name}`)}
           >
-            <Text style={styles.categoryEmoji}>{category.image}</Text>
+            <View style={styles.iconContainer}>
+              <Feather name={category.icon} size={24} color="#ff4757" />
+            </View>
             <Text style={styles.categoryName}>{category.name}</Text>
           </TouchableOpacity>
         ))}
@@ -42,30 +38,32 @@ export default function CategoryList() {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
+    marginVertical: 16,
   },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 16,
+    marginBottom: 12,
+    paddingHorizontal: 16,
   },
-  scrollContent: {
-    paddingRight: 16,
+  scrollView: {
+    paddingLeft: 16,
   },
   categoryItem: {
     alignItems: 'center',
     marginRight: 16,
-    backgroundColor: '#f5f5f5',
-    padding: 12,
-    borderRadius: 12,
-    width: 80,
   },
-  categoryEmoji: {
-    fontSize: 24,
-    marginBottom: 4,
+  iconContainer: {
+    width: 60,
+    height: 60,
+    backgroundColor: '#ffecec',
+    borderRadius: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 8,
   },
   categoryName: {
-    fontSize: 12,
-    textAlign: 'center',
+    fontSize: 14,
+    color: '#333',
   },
 });
